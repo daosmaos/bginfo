@@ -87,7 +87,7 @@ Write-Host ($writeEmptyLine + "# bginfo.exe available" + $writeSeperator + $time
  
 ##-------------------------------------------------------------------------------------------------------------------------------------------------------
  
-Download, save and extract logon.bgi file to C:\BgInfo
+## Download, save and extract logon.bgi file to C:\BgInfo
  
 Invoke-WebRequest -Uri $logonBgiUrl -OutFile $logonBgiZip
 [System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem") | Out-Null
