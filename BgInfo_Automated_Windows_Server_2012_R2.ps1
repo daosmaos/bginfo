@@ -5,10 +5,10 @@ A script used to download, install and configure the latest BgInfo version on a 
  
 .DESCRIPTION
  
-A script used to download, install and configure the latest BgInfo version (v4.27) on a Windows Server 2012 R2. The BgInfo folder will be created on the C: drive if the folder does not already exist. 
-Then the latest BgInfo.zip file will be downloaded and extracted in the BgInfo folder. The LogonBgi.zip file which holds the preferred settings will also be downloaded and extracted to the BgInfo folder. 
-After extraction both .zip files will be deleted. A registry key (regkey) to AutoStart the BgInfo tool in combination with the logon.bgi config file will be created. At the end of the script BgInfo will 
-be started for the first time and the PowerShell window will be closed.
+A script used to download, install and configure the latest BgInfo version on a Windows Server. The BgInfo folder will be created on the C: drive if the folder does not already exist. 
+Then the latest BgInfo.zip file will be downloaded and extracted in the BgInfo folder. The logon.bgi file which holds the preferred settings will also be downloaded to the BgInfo folder. 
+After extraction .zip files will be deleted. A registry key (regkey) to AutoStart the BgInfo tool in combination with the logon.bgi config file will be created. At the end of the script BgInfo will 
+be started for the first time.
  
 .NOTES
  
@@ -38,10 +38,9 @@ $bgInfoFolder = "C:\BgInfo"
 $bgInfoFolderContent = $bgInfoFolder + "\*"
 $itemType = "Directory"
 $bgInfoUrl = "https://download.sysinternals.com/files/BGInfo.zip"
-$logonBgiUrl = "https://tinyurl.com/yxlxbgun"
+$logonBgiUrl = "https://github.com/daosmaos/bginfo/blob/main/logon.bgi"
 $bgInfoZip = "C:\BgInfo\BgInfo.zip"
 $bgInfoEula = "C:\BgInfo\Eula.txt"
-$logonBgiZip = "C:\BgInfo\LogonBgi.zip"
 $bgInfoRegPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
 $bgInfoRegkey = "BgInfo"
 $bgInfoRegType = "String"
@@ -69,33 +68,33 @@ If (!(Test-Path -Path $bgInfoFolder)){New-Item -ItemType $itemType -Force -Path 
     -foregroundcolor $foregroundColor1 $writeEmptyLine
  }Else{Write-Host ($writeEmptyLine + "# BgInfo folder already exists" + $writeSeperator + $time)`
     -foregroundcolor $foregroundColor2 $writeEmptyLine}
-    #Remove-Item $bgInfoFolderContent -Force -Recurse -ErrorAction SilentlyContinue
-    #Write-Host ($writeEmptyLine + "# Content existing BgInfo folder deleted" + $writeSeperator + $time)`
-    #-foregroundcolor $foregroundColor2 $writeEmptyLine}
+    Remove-Item $bgInfoFolderContent -Force -Recurse -ErrorAction SilentlyContinue
+    Write-Host ($writeEmptyLine + "# Content existing BgInfo folder deleted" + $writeSeperator + $time)`
+    -foregroundcolor $foregroundColor2 $writeEmptyLine}
  
 ##-------------------------------------------------------------------------------------------------------------------------------------------------------
  
 ## Download, save and extract latest BgInfo software to C:\BgInfo
  
-#Import-Module BitsTransfer
-#Start-BitsTransfer -Source $bgInfoUrl -Destination $bgInfoZip
-#[System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem") | Out-Null
-#[System.IO.Compression.ZipFile]::ExtractToDirectory($bgInfoZip, $bgInfoFolder)
-#Remove-Item $bgInfoZip
-#Remove-Item $bgInfoEula
-#Write-Host ($writeEmptyLine + "# bginfo.exe available" + $writeSeperator + $time)`
-#-foregroundcolor $foregroundColor1 $writeEmptyLine
+Import-Module BitsTransfer
+Start-BitsTransfer -Source $bgInfoUrl -Destination $bgInfoZip
+[System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem") | Out-Null
+[System.IO.Compression.ZipFile]::ExtractToDirectory($bgInfoZip, $bgInfoFolder)
+Remove-Item $bgInfoZip
+Remove-Item $bgInfoEula
+Write-Host ($writeEmptyLine + "# bginfo.exe available" + $writeSeperator + $time)`
+-foregroundcolor $foregroundColor1 $writeEmptyLine
  
 ##-------------------------------------------------------------------------------------------------------------------------------------------------------
  
-## Download, save and extract logon.bgi file to C:\BgInfo
+Download, save and extract logon.bgi file to C:\BgInfo
  
-#Invoke-WebRequest -Uri $logonBgiUrl -OutFile $logonBgiZip
-#[System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem") | Out-Null
-#[System.IO.Compression.ZipFile]::ExtractToDirectory($logonBgiZip, $bgInfoFolder)
-#Remove-Item $logonBgiZip
-#Write-Host ($writeEmptyLine + "# logon.bgi available" + $writeSeperator + $time)`
-#-foregroundcolor $foregroundColor1 $writeEmptyLine
+Invoke-WebRequest -Uri $logonBgiUrl -OutFile $logonBgiZip
+[System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem") | Out-Null
+[System.IO.Compression.ZipFile]::ExtractToDirectory($logonBgiZip, $bgInfoFolder)
+Remove-Item $logonBgiZip
+Write-Host ($writeEmptyLine + "# logon.bgi available" + $writeSeperator + $time)`
+-foregroundcolor $foregroundColor1 $writeEmptyLine
  
 ##-------------------------------------------------------------------------------------------------------------------------------------------------------
  
