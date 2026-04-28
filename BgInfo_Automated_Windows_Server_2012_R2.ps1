@@ -41,6 +41,7 @@ $bgInfoUrl = "https://download.sysinternals.com/files/BGInfo.zip"
 $logonBgiUrl = "https://github.com/daosmaos/bginfo/blob/main/logon.bgi"
 $bgInfoZip = "C:\BgInfo\BgInfo.zip"
 $bgInfoEula = "C:\BgInfo\Eula.txt"
+$logonBgi = "C:\BgInfo\logon.bgi"
 $bgInfoRegPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
 $bgInfoRegkey = "BgInfo"
 $bgInfoRegType = "String"
@@ -70,7 +71,7 @@ If (!(Test-Path -Path $bgInfoFolder)){New-Item -ItemType $itemType -Force -Path 
     -foregroundcolor $foregroundColor2 $writeEmptyLine}
     Remove-Item $bgInfoFolderContent -Force -Recurse -ErrorAction SilentlyContinue
     Write-Host ($writeEmptyLine + "# Content existing BgInfo folder deleted" + $writeSeperator + $time)`
-    -foregroundcolor $foregroundColor2 $writeEmptyLine}
+    -foregroundcolor $foregroundColor2 $writeEmptyLine
  
 ##-------------------------------------------------------------------------------------------------------------------------------------------------------
  
@@ -89,10 +90,8 @@ Write-Host ($writeEmptyLine + "# bginfo.exe available" + $writeSeperator + $time
  
 ## Download, save and extract logon.bgi file to C:\BgInfo
  
-Invoke-WebRequest -Uri $logonBgiUrl -OutFile $logonBgiZip
+Invoke-WebRequest -Uri $logonBgiUrl -OutFile $logonBgi
 [System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem") | Out-Null
-[System.IO.Compression.ZipFile]::ExtractToDirectory($logonBgiZip, $bgInfoFolder)
-Remove-Item $logonBgiZip
 Write-Host ($writeEmptyLine + "# logon.bgi available" + $writeSeperator + $time)`
 -foregroundcolor $foregroundColor1 $writeEmptyLine
  
